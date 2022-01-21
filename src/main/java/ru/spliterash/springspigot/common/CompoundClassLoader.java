@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class CompoundClassLoader extends ClassLoader {
 
-    private Collection<ClassLoader> _loaders;
+    private final Collection<ClassLoader> _loaders;
 
     /**
      * Constructs a new CompoundClassLoader.
