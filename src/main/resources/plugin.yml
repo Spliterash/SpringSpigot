@@ -1,0 +1,4 @@
+name: SpringSpigot
+main: ru.spliterash.springspigot.SpringSpigotPlugin
+version: 1.0.0
+api-version: 1.18

@@ -1,0 +1,45 @@
+plugins {
+    id 'java-library'
+    id "io.freefair.lombok" version "6.3.0"
+    id 'org.springframework.boot' version '2.6.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+tasks.assemble.dependsOn tasks.shadowJar
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+
+    maven {
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+        name = "spigot-repo"
+    }
+
+    maven {
+        name = "vault-repo"
+        url = "https://nexus.hc.to/content/repositories/pub_releases"
+    }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
+
+    implementation 'org.springframework.boot:spring-boot'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+}
+
