@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
     id "io.freefair.lombok" version "6.3.0"
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
@@ -7,18 +8,21 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
-tasks.assemble.dependsOn tasks.shadowJar
+group = "ru.spliterash"
+version = "1.0.0"
 
 compileJava {
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
 }
+
 bootJar {
     enabled = false
 }
 
 jar {
     enabled = true
+    archiveClassifier.set("")
 }
 
 repositories {
@@ -43,6 +47,29 @@ dependencies {
     api 'org.apache.commons:commons-lang3:3.12.0'
     // https://mvnrepository.com/artifact/org.reflections/reflections
     api 'org.reflections:reflections:0.10.2'
-
 }
 
+apply from: "https://gradle.spliterash.ru/maven-publish.gradle"
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            pom {
+                description = "SpringSpigot"
+            }
+            from components.java
+
+            repositories {
+                maven {
+                    name = "nexus"
+                    url = "https://nexus.spliterash.ru/repository/spring-spigot"
+                    credentials {
+                        username = project.property("splitNexusUser") as String
+                        password = project.property("splitNexusPassword") as String
+                    }
+                }
+            }
+        }
+    }
+}
