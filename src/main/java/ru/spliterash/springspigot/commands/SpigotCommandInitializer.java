@@ -1,49 +1,33 @@
-package ru.spliterash.springspigot.configuration;
+package ru.spliterash.springspigot.commands;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.springframework.aop.support.AopUtils;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
-import ru.spliterash.springspigot.commands.SpigotCommand;
 
 import java.util.Collection;
 
 @Slf4j
 @Configuration
-@ConditionalOnClass({Bukkit.class})
 @RequiredArgsConstructor
-public class SpringSpigotConfiguration {
+public class SpigotCommandInitializer {
     private final JavaPlugin plugin;
     private final ApplicationContext context;
 
     private boolean initialized = false;
 
+    @SuppressWarnings("unused")
     @EventListener
-    public void onStartup() {
+    public void onStartup(ContextRefreshedEvent event) {
         if (initialized) return;
         initialized = true;
-        // Регаем команды
-        registerCommands();
-        // Евентики
-        registerEvents();
-    }
 
-    @EventListener
-    public void onClose() {
-        HandlerList.unregisterAll(plugin);
-    }
-
-
-    private void registerCommands() {
         Collection<Object> commands = context.getBeansWithAnnotation(SpigotCommand.class)
                 .values();
 
@@ -63,12 +47,6 @@ public class SpringSpigotConfiguration {
             }
 
             cmd.setExecutor((CommandExecutor) command);
-        }
-    }
-
-    private void registerEvents() {
-        for (Listener value : context.getBeansOfType(Listener.class).values()) {
-            plugin.getServer().getPluginManager().registerEvents(value, plugin);
         }
     }
 }
