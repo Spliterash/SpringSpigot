@@ -1,62 +1,36 @@
 package ru.spliterash.springspigot.init;
 
-import ru.spliterash.springspigot.common.CompoundClassLoader;
+import lombok.experimental.UtilityClass;
 import lombok.val;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.env.PropertiesPropertySource;
+import ru.spliterash.springspigot.configuration.ConfigurationPropertySource;
 
 import java.util.Properties;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
+@UtilityClass
 public final class SpringSpigotBootstrapper {
+    public static ConfigurableApplicationContext initialize(JavaPlugin plugin, String... scanPackages) {
+        String[] finalPackages = new String[scanPackages.length + 1];
+        System.arraycopy(scanPackages, 0, finalPackages, 0, scanPackages.length);
+        finalPackages[finalPackages.length - 1] = "ru.spliterash.springspigot";
+        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(finalPackages);
+        context.setClassLoader(plugin.getClass().getClassLoader());
+        init(context, plugin);
 
-    private SpringSpigotBootstrapper() {
+        context.start();
+
+        return context;
     }
 
-    public static ConfigurableApplicationContext initialize(JavaPlugin plugin, Class<?> applicationClass) throws ExecutionException, InterruptedException {
-        CompoundClassLoader classLoader = new CompoundClassLoader(plugin.getClass().getClassLoader(), Thread.currentThread().getContextClassLoader());
-        return initialize(plugin, classLoader, new SpringApplicationBuilder(applicationClass));
+    private void init(ConfigurableApplicationContext context, JavaPlugin plugin) {
+        val propertySources = context.getEnvironment().getPropertySources();
+        propertySources.addLast(new ConfigurationPropertySource(plugin.getConfig()));
+
+        val props = new Properties();
+        props.put("spigot.plugin", plugin.getName());
+        propertySources.addLast(new PropertiesPropertySource("spring-bukkit", props));
     }
-
-    public static ConfigurableApplicationContext initialize(JavaPlugin plugin, SpringApplicationBuilder builder) throws ExecutionException, InterruptedException {
-        CompoundClassLoader classLoader = new CompoundClassLoader(plugin.getClass().getClassLoader(), Thread.currentThread().getContextClassLoader());
-        return initialize(plugin, classLoader, builder);
-    }
-
-    public static ConfigurableApplicationContext initialize(JavaPlugin plugin, ClassLoader classLoader, Class<?> applicationClass) throws ExecutionException, InterruptedException {
-        return initialize(plugin, classLoader, new SpringApplicationBuilder(applicationClass));
-    }
-
-    public static ConfigurableApplicationContext initialize(JavaPlugin plugin, ClassLoader classLoader, SpringApplicationBuilder builder) throws ExecutionException, InterruptedException {
-        val executor = Executors.newSingleThreadExecutor();
-        try {
-            Future<ConfigurableApplicationContext> contextFuture = executor.submit(() -> {
-                Thread.currentThread().setContextClassLoader(classLoader);
-
-                val props = new Properties();
-                try {
-                    props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("application.properties"));
-                } catch (Exception ignored) {
-                }
-
-                if (builder.application().getResourceLoader() == null) {
-                    val loader = new DefaultResourceLoader(classLoader);
-                    builder.resourceLoader(loader);
-                }
-                return builder
-                        .properties(props)
-                        .initializers(new SpringSpigotInitializer(plugin))
-                        .run();
-            });
-            return contextFuture.get();
-        } finally {
-            executor.shutdown();
-        }
-    }
-
-
 }
