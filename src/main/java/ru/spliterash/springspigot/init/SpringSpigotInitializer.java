@@ -1,18 +1,18 @@
-package ru.spliterash.springspigot;
+package ru.spliterash.springspigot.init;
 
 import lombok.val;
 import org.bukkit.plugin.Plugin;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.PropertiesPropertySource;
+import ru.spliterash.springspigot.configuration.ConfigurationPropertySource;
 
 import java.util.Properties;
 
 /**
  * Initializer that set core properties and adds config yml source
  */
-public class SpringSpigotInitializer implements
-        ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class SpringSpigotInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     private final Plugin plugin;
 

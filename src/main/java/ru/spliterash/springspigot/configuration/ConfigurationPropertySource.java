@@ -1,11 +1,11 @@
-package ru.spliterash.springspigot;
+package ru.spliterash.springspigot.configuration;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.springframework.core.env.PropertySource;
 
-class ConfigurationPropertySource extends PropertySource<FileConfiguration> {
+public class ConfigurationPropertySource extends PropertySource<FileConfiguration> {
 
-    ConfigurationPropertySource(FileConfiguration source) {
+    public ConfigurationPropertySource(FileConfiguration source) {
         super("config", source);
     }
 

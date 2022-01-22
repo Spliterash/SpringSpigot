@@ -1,4 +1,4 @@
-package ru.spliterash.springspigot;
+package ru.spliterash.springspigot.init;
 
 import ru.spliterash.springspigot.common.CompoundClassLoader;
 import lombok.val;
