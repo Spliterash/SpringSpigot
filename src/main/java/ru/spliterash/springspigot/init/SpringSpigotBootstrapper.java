@@ -1,6 +1,7 @@
 package ru.spliterash.springspigot.init;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.springframework.boot.Banner;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -41,6 +42,7 @@ public final class SpringSpigotBootstrapper {
         return builder
                 .resourceLoader(new DefaultResourceLoader(classLoader))
                 .initializers(new SpringSpigotInitializer(plugin))
+                .bannerMode(Banner.Mode.OFF)
                 .run();
     }
 
