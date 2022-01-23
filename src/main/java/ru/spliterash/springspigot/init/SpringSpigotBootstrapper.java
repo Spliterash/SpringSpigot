@@ -1,36 +1,48 @@
 package ru.spliterash.springspigot.init;
 
-import lombok.experimental.UtilityClass;
-import lombok.val;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.core.env.PropertiesPropertySource;
-import ru.spliterash.springspigot.configuration.ConfigurationPropertySource;
+import org.springframework.core.io.DefaultResourceLoader;
+import ru.spliterash.springspigot.SpringSpigotPlugin;
+import ru.spliterash.springspigot.common.CompoundClassLoader;
 
-import java.util.Properties;
+import java.util.HashSet;
+import java.util.Set;
 
-@UtilityClass
 public final class SpringSpigotBootstrapper {
-    public static ConfigurableApplicationContext initialize(JavaPlugin plugin, String... scanPackages) {
-        String[] finalPackages = new String[scanPackages.length + 1];
-        System.arraycopy(scanPackages, 0, finalPackages, 0, scanPackages.length);
-        finalPackages[finalPackages.length - 1] = "ru.spliterash.springspigot";
-        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(finalPackages);
-        context.setClassLoader(plugin.getClass().getClassLoader());
-        init(context, plugin);
 
-        context.start();
-
-        return context;
+    private SpringSpigotBootstrapper() {
     }
 
-    private void init(ConfigurableApplicationContext context, JavaPlugin plugin) {
-        val propertySources = context.getEnvironment().getPropertySources();
-        propertySources.addLast(new ConfigurationPropertySource(plugin.getConfig()));
+    public static ConfigurableApplicationContext initialize(JavaPlugin plugin, Class<?> appClass) {
+        if (plugin.getClass().equals(appClass))
+            throw new RuntimeException("Plugin can be app class");
 
-        val props = new Properties();
-        props.put("spigot.plugin", plugin.getName());
-        propertySources.addLast(new PropertiesPropertySource("spring-bukkit", props));
+        Set<ClassLoader> loaders = new HashSet<>();
+
+        loaders.add(plugin.getClass().getClassLoader());
+        loaders.add(SpringSpigotPlugin.class.getClassLoader());
+        loaders.add(Thread.currentThread().getContextClassLoader());
+
+        CompoundClassLoader classLoader = new CompoundClassLoader(loaders);
+
+        return initialize(plugin, classLoader, appClass);
     }
+
+
+    public static ConfigurableApplicationContext initialize(JavaPlugin plugin, ClassLoader classLoader, Class<?> appClass) {
+        SpringApplicationBuilder builder = new SpringApplicationBuilder(appClass);
+
+        builder
+                .application()
+                .setMainApplicationClass(appClass);
+
+        return builder
+                .resourceLoader(new DefaultResourceLoader(classLoader))
+                .initializers(new SpringSpigotInitializer(plugin))
+                .run();
+    }
+
+
 }

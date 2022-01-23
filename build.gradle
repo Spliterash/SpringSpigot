@@ -43,8 +43,7 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
 
-    // https://mvnrepository.com/artifact/org.springframework/spring-context
-    api 'org.springframework:spring-context'
+    api 'org.springframework.boot:spring-boot-starter'
     api 'org.apache.commons:commons-lang3:3.12.0'
     // https://mvnrepository.com/artifact/org.reflections/reflections
     api 'org.reflections:reflections:0.10.2'

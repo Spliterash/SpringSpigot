@@ -27,6 +27,8 @@ public class SpringSpigotInitializer implements ApplicationContextInitializer<Co
         val props = new Properties();
         props.put("spigot.plugin", plugin.getName());
         propertySources.addLast(new PropertiesPropertySource("spring-bukkit", props));
+
+        context.getBeanFactory().registerSingleton(plugin.getClass().getCanonicalName(), plugin);
     }
 
 }
