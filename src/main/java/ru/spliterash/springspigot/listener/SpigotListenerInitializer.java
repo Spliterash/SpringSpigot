@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import ru.spliterash.springspigot.utils.ProxyUtils;
 
 @Configuration
 @RequiredArgsConstructor
@@ -26,7 +27,8 @@ public class SpigotListenerInitializer {
         initialized = true;
 
         for (Listener value : context.getBeansOfType(Listener.class).values()) {
-            plugin.getServer().getPluginManager().registerEvents(value, plugin);
+            Listener realListener = ProxyUtils.getProxyTarget(value);
+            plugin.getServer().getPluginManager().registerEvents(realListener, plugin);
         }
     }
 
