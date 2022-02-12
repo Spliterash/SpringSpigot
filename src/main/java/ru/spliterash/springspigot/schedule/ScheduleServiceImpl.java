@@ -2,8 +2,10 @@ package ru.spliterash.springspigot.schedule;
 
 import lombok.RequiredArgsConstructor;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.springframework.stereotype.Component;
+import ru.spliterash.springspigot.schedule.func.CancelRunnable;
 
 @Component
 @RequiredArgsConstructor
@@ -39,6 +41,28 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public BukkitTask runAsyncTask(Runnable runnable) {
         return plugin.getServer().getScheduler().runTaskAsynchronously(plugin, runnable);
+    }
+
+    @Override
+    public BukkitTask runTaskTimer(CancelRunnable runnable, long delay, long period) {
+        return new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (!runnable.run())
+                    cancel();
+            }
+        }.runTaskTimer(plugin, delay, period);
+    }
+
+    @Override
+    public BukkitTask runTaskTimerAsync(CancelRunnable runnable, long delay, long period) {
+        return new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (!runnable.run())
+                    cancel();
+            }
+        }.runTaskTimerAsynchronously(plugin, delay, period);
     }
 
 }
