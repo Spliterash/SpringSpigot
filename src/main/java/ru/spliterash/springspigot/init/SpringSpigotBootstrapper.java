@@ -8,8 +8,8 @@ import org.springframework.core.io.DefaultResourceLoader;
 import ru.spliterash.springspigot.SpringSpigotPlugin;
 import ru.spliterash.springspigot.common.CompoundClassLoader;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class SpringSpigotBootstrapper {
 
@@ -20,10 +20,13 @@ public final class SpringSpigotBootstrapper {
         if (plugin.getClass().equals(appClass))
             throw new RuntimeException("Plugin can be app class");
 
-        Set<ClassLoader> loaders = new HashSet<>();
+        List<ClassLoader> loaders = new ArrayList<>();
 
+        // Плагин имеет высший приоритет
         loaders.add(plugin.getClass().getClassLoader());
+        // Потом идёт сам спринг
         loaders.add(SpringSpigotPlugin.class.getClassLoader());
+        // А эт я понятия не имею чо такое
         loaders.add(Thread.currentThread().getContextClassLoader());
 
         CompoundClassLoader classLoader = new CompoundClassLoader(loaders);
