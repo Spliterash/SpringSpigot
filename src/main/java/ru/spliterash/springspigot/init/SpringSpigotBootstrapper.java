@@ -5,7 +5,7 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.DefaultResourceLoader;
-import ru.spliterash.springspigot.SpringSpigotPlugin;
+import ru.spliterash.springspigot.LibSpringSpigotPlugin;
 import ru.spliterash.springspigot.common.CompoundClassLoader;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public final class SpringSpigotBootstrapper {
         // Плагин имеет высший приоритет
         loaders.add(plugin.getClass().getClassLoader());
         // Потом идёт сам спринг
-        loaders.add(SpringSpigotPlugin.class.getClassLoader());
+        loaders.add(LibSpringSpigotPlugin.class.getClassLoader());
         // А эт я понятия не имею чо такое
         loaders.add(Thread.currentThread().getContextClassLoader());
 
