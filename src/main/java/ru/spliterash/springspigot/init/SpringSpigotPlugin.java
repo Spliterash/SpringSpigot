@@ -30,5 +30,16 @@ public abstract class SpringSpigotPlugin extends JavaPlugin implements PluginCal
         }
     }
 
+    public <T> T getService(Class<T> serviceClass) {
+        if (allowExternalAccess(serviceClass))
+            return context.getBean(serviceClass);
+        else
+            return null;
+    }
+
+    protected boolean allowExternalAccess(Class<?> needClass) {
+        return true; // по дефлоту разрешаем всё
+    }
+
     protected abstract Class<?> getAppClass();
 }
