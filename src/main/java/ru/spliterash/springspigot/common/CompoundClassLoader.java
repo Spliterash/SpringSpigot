@@ -10,7 +10,10 @@ import java.util.*;
  */
 public class CompoundClassLoader extends ClassLoader {
 
-    private final Collection<ClassLoader> _loaders;
+    /**
+     * Загрузчики которые чекаем в первую очередь, так же отсюда можем тянуть ресурсы
+     */
+    private final Collection<ClassLoader> defaultLoaders;
 
     /**
      * Constructs a new CompoundClassLoader.
@@ -18,7 +21,7 @@ public class CompoundClassLoader extends ClassLoader {
      * @param loaders the loaders to iterate over
      */
     public CompoundClassLoader(ClassLoader... loaders) {
-        _loaders = Arrays.asList(loaders);
+        defaultLoaders = Arrays.asList(loaders);
     }
 
     /**
@@ -27,7 +30,32 @@ public class CompoundClassLoader extends ClassLoader {
      * @param loaders the loaders to iterate over
      */
     public CompoundClassLoader(Collection<ClassLoader> loaders) {
-        _loaders = loaders;
+        defaultLoaders = loaders;
+    }
+
+    private Optional<ClassLoader> spigotWorkaround(String name) {
+        return spigotWorkaroundClass(name)
+                .map(Class::getClassLoader);
+    }
+
+    private Optional<Class<?>> spigotWorkaroundClass(String name) {
+        if (!name.endsWith(".class"))
+            return Optional.empty(); // Если это не класс, то это может быть какой то ресурс чужого плагина, оно нам не надо
+
+        name = name.replace("/", ".");
+        name = name.substring(0, name.length() - ".class".length());
+
+        Class<?> foundClass = null;
+        for (ClassLoader loader : defaultLoaders) {
+            try {
+                foundClass = Class.forName(name, false, loader);
+                break;
+            } catch (ClassNotFoundException ignore) {
+
+            }
+        }
+
+        return Optional.ofNullable(foundClass);
     }
 
     /**
@@ -35,7 +63,7 @@ public class CompoundClassLoader extends ClassLoader {
      */
     @Override
     public URL getResource(String name) {
-        for (ClassLoader loader : _loaders) {
+        for (ClassLoader loader : defaultLoaders) {
             if (loader != null) {
                 URL resource = loader.getResource(name);
                 if (resource != null) {
@@ -43,15 +71,19 @@ public class CompoundClassLoader extends ClassLoader {
                 }
             }
         }
-        return null;
+
+        return spigotWorkaround(name)
+                .map(loader -> loader.getResource(name))
+                .orElse(null);
     }
+
 
     /**
      * {@inheritDoc}
      */
     @Override
     public InputStream getResourceAsStream(String name) {
-        for (ClassLoader loader : _loaders) {
+        for (ClassLoader loader : defaultLoaders) {
             if (loader != null) {
                 InputStream is = loader.getResourceAsStream(name);
                 if (is != null) {
@@ -59,16 +91,17 @@ public class CompoundClassLoader extends ClassLoader {
                 }
             }
         }
-        return null;
+
+        return spigotWorkaround(name)
+                .map(loader -> loader.getResourceAsStream(name))
+                .orElse(null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    // В этом методе юзаются только ресурсы самого плагина, не буду сюда все плаги пихать, а то каша будет
     @Override
     public Enumeration<URL> getResources(String name) throws IOException {
-        List<URL> urls = new ArrayList<URL>();
-        for (ClassLoader loader : _loaders) {
+        List<URL> urls = new ArrayList<>();
+        for (ClassLoader loader : defaultLoaders) {
             if (loader != null) {
                 try {
                     Enumeration<URL> resources = loader.getResources(name);
@@ -84,15 +117,14 @@ public class CompoundClassLoader extends ClassLoader {
                 }
             }
         }
+
         return Collections.enumeration(urls);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
-        for (ClassLoader loader : _loaders) {
+        for (ClassLoader loader : defaultLoaders) {
             if (loader != null) {
                 try {
                     return loader.loadClass(name);
@@ -116,6 +148,6 @@ public class CompoundClassLoader extends ClassLoader {
 
     @Override
     public String toString() {
-        return String.format("CompoundClassloader %s", _loaders);
+        return String.format("CompoundClassloader %s", defaultLoaders);
     }
 }
