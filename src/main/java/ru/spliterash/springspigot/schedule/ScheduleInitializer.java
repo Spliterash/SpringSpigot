@@ -7,21 +7,20 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
 import ru.spliterash.springspigot.schedule.annotation.AsyncSchedule;
 import ru.spliterash.springspigot.schedule.annotation.SyncSchedule;
 import ru.spliterash.springspigot.schedule.markers.SpigotScheduler;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.concurrent.Executor;
 
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class ScheduleInitializer {
+public class ScheduleInitializer implements AsyncConfigurer {
     private final ApplicationContext context;
     private final ScheduleService scheduleService;
 
@@ -60,6 +59,11 @@ public class ScheduleInitializer {
                 }
             }
         }
+    }
+
+    @Override
+    public Executor getAsyncExecutor() {
+        return scheduleService::runAsyncTask;
     }
 
     private void checkMethod(Method method) throws InvalidMethodSignature {
