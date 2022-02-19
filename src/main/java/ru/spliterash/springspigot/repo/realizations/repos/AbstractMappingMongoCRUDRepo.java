@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class AbstractMappingMongoCRUDRepo<E, D> extends AbstractMongoCRUDRepo<E> implements CRUDRepo<E> {
-    private final MongoEntityMapper<E, D> mapper;
-    private final Class<D> documentClass;
+    protected final MongoEntityMapper<E, D> mapper;
+    protected final Class<D> documentClass;
 
     public AbstractMappingMongoCRUDRepo(MongoTemplate mongoTemplate, MongoEntityMapper<E, D> mapper) {
         super(mongoTemplate);

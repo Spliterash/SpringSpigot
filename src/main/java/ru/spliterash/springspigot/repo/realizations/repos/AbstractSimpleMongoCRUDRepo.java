@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class AbstractSimpleMongoCRUDRepo<E> extends AbstractMongoCRUDRepo<E> implements CRUDRepo<E> {
-    private final Class<E> documentClass;
+    protected final Class<E> documentClass;
 
     public AbstractSimpleMongoCRUDRepo(MongoTemplate mongoTemplate) {
         super(mongoTemplate);
