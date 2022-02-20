@@ -8,6 +8,8 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
+tasks.assemble.dependsOn tasks.shadowJar
+
 group = "ru.spliterash"
 version = "1.0.0"
 
