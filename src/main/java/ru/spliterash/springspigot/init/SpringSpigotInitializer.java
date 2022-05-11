@@ -4,7 +4,9 @@ import lombok.val;
 import org.bukkit.plugin.Plugin;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.PropertiesPropertySource;
+import ru.spliterash.springspigot.SpringSpigotConfiguration;
 import ru.spliterash.springspigot.configuration.ConfigurationPropertySource;
 
 import java.util.Properties;
@@ -29,6 +31,9 @@ public class SpringSpigotInitializer implements ApplicationContextInitializer<Co
         propertySources.addLast(new PropertiesPropertySource("spring-bukkit", props));
 
         context.getBeanFactory().registerSingleton(plugin.getClass().getCanonicalName(), plugin);
+        if (context instanceof AnnotationConfigApplicationContext) {
+            ((AnnotationConfigApplicationContext) context).register(SpringSpigotConfiguration.class);
+        }
     }
 
 }

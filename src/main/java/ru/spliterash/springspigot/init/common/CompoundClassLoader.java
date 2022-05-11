@@ -1,4 +1,4 @@
-package ru.spliterash.springspigot.common;
+package ru.spliterash.springspigot.init.common;
 
 import java.io.IOException;
 import java.io.InputStream;

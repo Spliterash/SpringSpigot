@@ -6,47 +6,34 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.springframework.aop.support.AopUtils;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
-
-import java.util.Collection;
 
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class SpigotCommandInitializer {
+public class SpigotCommandInitializer implements BeanPostProcessor {
     private final JavaPlugin plugin;
-    private final ApplicationContext context;
 
-    private boolean initialized = false;
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        if (bean instanceof CommandExecutor) {
+            Class<?> targetClass = AopUtils.getTargetClass(bean);
+            SpigotCommand annotation = targetClass.getAnnotation(SpigotCommand.class);
+            if (annotation != null) {
+                String commandValue = annotation.command();
 
-    @SuppressWarnings("unused")
-    @EventListener
-    public void onStartup(ContextRefreshedEvent event) {
-        if (initialized) return;
-        initialized = true;
+                PluginCommand cmd = plugin.getCommand(commandValue);
 
-        Collection<Object> commands = context.getBeansWithAnnotation(SpigotCommand.class)
-                .values();
+                if (cmd != null)
+                    cmd.setExecutor((CommandExecutor) bean);
+                else
+                    log.warn("You forgot add command '" + commandValue + "' to plugin.yml");
 
-        for (Object command : commands) {
-            if (!(command instanceof CommandExecutor)) {
-                log.warn("@SpringCommand class '" + command.getClass().getSimpleName() + "' is not CommandExecutor");
-                continue;
             }
-
-            SpigotCommand annotation = AopUtils.getTargetClass(command).getAnnotation(SpigotCommand.class);
-            String commandValue = annotation.command();
-
-            PluginCommand cmd = plugin.getCommand(commandValue);
-            if (cmd == null) {
-                log.warn("You forgot add command '" + commandValue + "' to plugin.yml");
-                continue;
-            }
-
-            cmd.setExecutor((CommandExecutor) command);
         }
+
+        return bean;
     }
 }

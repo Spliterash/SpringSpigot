@@ -6,7 +6,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.DefaultResourceLoader;
 import ru.spliterash.springspigot.LibSpringSpigotPlugin;
-import ru.spliterash.springspigot.common.CompoundClassLoader;
+import ru.spliterash.springspigot.init.common.CompoundClassLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public final class SpringSpigotBootstrapper {
         if (plugin.getClass().equals(appClass))
             throw new RuntimeException("Plugin can be app class");
 
-        List<ClassLoader> loaders = new ArrayList<>();
+        List<ClassLoader> loaders = new ArrayList<>(4);
 
         // Плагин имеет высший приоритет
         loaders.add(plugin.getClass().getClassLoader());
@@ -46,6 +46,7 @@ public final class SpringSpigotBootstrapper {
                 .resourceLoader(new DefaultResourceLoader(classLoader))
                 .initializers(new SpringSpigotInitializer(plugin))
                 .bannerMode(Banner.Mode.OFF)
+                .lazyInitialization(true)
                 .run();
     }
 
