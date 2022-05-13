@@ -2,6 +2,7 @@ package ru.spliterash.springspigot.init;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.springframework.boot.Banner;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -10,7 +11,7 @@ import ru.spliterash.springspigot.init.common.CompoundClassLoader;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@EnableAutoConfiguration()
 public final class SpringSpigotBootstrapper {
 
     private SpringSpigotBootstrapper() {
@@ -18,7 +19,7 @@ public final class SpringSpigotBootstrapper {
 
     public static ConfigurableApplicationContext initialize(JavaPlugin plugin, Class<?> appClass) {
         if (plugin.getClass().equals(appClass))
-            throw new RuntimeException("Plugin can be app class");
+            throw new RuntimeException("Plugin cant be app class");
 
         List<ClassLoader> loaders = new ArrayList<>(4);
 
@@ -46,7 +47,6 @@ public final class SpringSpigotBootstrapper {
                 .resourceLoader(new DefaultResourceLoader(classLoader))
                 .initializers(new SpringSpigotInitializer(plugin))
                 .bannerMode(Banner.Mode.OFF)
-                .lazyInitialization(true)
                 .run();
     }
 

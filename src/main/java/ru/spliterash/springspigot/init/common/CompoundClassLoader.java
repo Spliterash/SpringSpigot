@@ -111,9 +111,7 @@ public class CompoundClassLoader extends ClassLoader {
                             urls.add(resource);
                         }
                     }
-                } catch (IOException ioe) {
-                    // ignoring, but to keep checkstyle happy ("Must have at least one statement."):
-                    ioe.getMessage();
+                } catch (IOException ignored) {
                 }
             }
         }
@@ -128,9 +126,7 @@ public class CompoundClassLoader extends ClassLoader {
             if (loader != null) {
                 try {
                     return loader.loadClass(name);
-                } catch (ClassNotFoundException cnfe) {
-                    // ignoring, but to keep checkstyle happy ("Must have at least one statement."):
-                    cnfe.getMessage();
+                } catch (ClassNotFoundException ignored) {
                 }
             }
         }
