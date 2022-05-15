@@ -73,8 +73,8 @@ publishing {
                     name = "nexus"
                     url = "https://nexus.spliterash.ru/repository/spring-spigot"
                     credentials {
-                        username = project.property("splitNexusUser") as String
-                        password = project.property("splitNexusPassword") as String
+                        username System.getenv('SPLITERASH_REPO_USR')
+                        password System.getenv('SPLITERASH_REPO_PSW')
                     }
                 }
             }
