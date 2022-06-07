@@ -6,8 +6,6 @@ pipeline {
     agent {
         docker {
             image 'adoptopenjdk:11'
-            reuseNode true
-            args '-v $HOME/.gradle:/root/.gradle -w /root/.gradle'
         }
     }
 
