@@ -12,6 +12,7 @@ pipeline {
     stages {
         stage('build') {
             steps {
+                sh 'echo $HOME'
                 sh 'sh gradlew publish'
             }
         }
