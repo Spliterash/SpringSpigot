@@ -1,5 +1,6 @@
 package ru.spliterash.springspigot.schedule;
 
+import com.google.common.eventbus.EventBus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.support.AopUtils;
