@@ -24,10 +24,9 @@ public abstract class SpringSpigotPlugin extends JavaPlugin implements PluginCal
     }
 
     public void reload() {
-        if (context != null) {
+        if (context != null)
             context.close();
-            context = SpringSpigotBootstrapper.initialize(this, getAppClass());
-        }
+        context = SpringSpigotBootstrapper.initialize(this, getAppClass());
     }
 
     public <T> T getService(Class<T> serviceClass) {
