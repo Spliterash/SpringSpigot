@@ -27,6 +27,7 @@ public class YamlService {
         mapper = new ObjectMapper(new YAMLFactory());
 
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
         mapper.registerModule(new LocationSer());
         mapper.registerModule(new TextComponentSer());
         mapper.registerModule(new ChatColorSer());

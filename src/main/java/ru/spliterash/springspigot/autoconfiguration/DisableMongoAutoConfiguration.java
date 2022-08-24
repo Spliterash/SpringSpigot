@@ -1,6 +1,7 @@
-package ru.spliterash.springspigot.annotations;
+package ru.spliterash.springspigot.autoconfiguration;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.mongo.MongoReactiveDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.mongo.MongoReactiveRepositoriesAutoConfiguration;
@@ -10,7 +11,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfigurati
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 
-@IgnoreDuringScan
+@Configuration
 @EnableAutoConfiguration(exclude = {
         MongoDataAutoConfiguration.class,
         MongoReactiveDataAutoConfiguration.class,
@@ -20,6 +21,6 @@ import org.springframework.context.annotation.Configuration;
         MongoAutoConfiguration.class,
         MongoReactiveAutoConfiguration.class
 })
-@Configuration
-class DisableMongoConfiguration {
+@ConditionalOnExpression("${spring-spigot.mongo:false} == false")
+class DisableMongoAutoConfiguration {
 }

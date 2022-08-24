@@ -2,16 +2,14 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id "io.freefair.lombok" version "6.3.0"
-    id 'org.springframework.boot' version '2.6.3'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-
+    id 'org.springframework.boot' version '2.7.3'
     id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 tasks.assemble.dependsOn tasks.shadowJar
 
 group = "ru.spliterash"
-version = "1.0.0"
+version = "1.0.1"
 
 compileJava {
     sourceCompatibility = '1.8'
@@ -44,10 +42,12 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
+    api platform('org.springframework.boot:spring-boot-dependencies:2.7.3')
 
     api 'org.springframework.boot:spring-boot-starter'
     api 'org.springframework.boot:spring-boot-starter-aop'
     api 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    api 'org.springframework.boot:spring-boot-starter-data-redis'
 
     api 'com.fasterxml.jackson.core:jackson-databind'
     api 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
@@ -58,8 +58,6 @@ dependencies {
     api 'org.apache.commons:commons-lang3:3.12.0'
     api 'commons-io:commons-io:2.11.0'
 }
-
-apply from: "https://gradle.spliterash.ru/maven-publish.gradle"
 
 
 publishing {
