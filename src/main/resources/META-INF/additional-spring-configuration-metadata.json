@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "spring-spigot.redis",
+      "type": "java.lang.Boolean",
+      "description": "Стоит ли включать Redis."
+    },
+    {
+      "name": "spring-spigot.mongo",
+      "type": "java.lang.Boolean",
+      "description": "Стоит ли включать Монгу."
+    }
+  ]
+}
