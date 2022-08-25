@@ -1,5 +1,6 @@
 package ru.spliterash.springspigot.autoconfiguration;
 
+import org.redisson.spring.starter.RedissonAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
@@ -18,7 +19,8 @@ import org.springframework.context.annotation.Configuration;
 @EnableAutoConfiguration(exclude = {
         RedisAutoConfiguration.class,
         RedisRepositoriesAutoConfiguration.class,
-        RedisReactiveAutoConfiguration.class
+        RedisReactiveAutoConfiguration.class,
+        RedissonAutoConfiguration.class
 })
 @ConditionalOnExpression("${spring-spigot.redis:false} == false")
 class DisableRedisAutoConfiguration {
