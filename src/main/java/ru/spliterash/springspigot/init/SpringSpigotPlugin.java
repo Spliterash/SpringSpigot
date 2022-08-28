@@ -12,7 +12,6 @@ public abstract class SpringSpigotPlugin extends JavaPlugin implements PluginCal
 
     @Override
     public void onEnable() {
-        saveDefaultConfig();
         this.context = SpringSpigotBootstrapper.initialize(this, getAppClass());
     }
 
