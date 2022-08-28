@@ -19,8 +19,10 @@ java {
 tasks.assemble.get().dependsOn(tasks.shadowJar)
 
 tasks.shadowJar {
-    mergeServiceFiles()
-    append("META-INF/spring/**")
+    mergeServiceFiles {
+        include("META-INF/spring/**")
+    }
+
     append("META-INF/spring.handlers")
     append("META-INF/spring.schemas")
     append("META-INF/spring.tooling")
