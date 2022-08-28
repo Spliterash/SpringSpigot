@@ -22,6 +22,6 @@ import org.springframework.context.annotation.Configuration;
         RedisReactiveAutoConfiguration.class,
         RedissonAutoConfiguration.class
 })
-@ConditionalOnExpression("${spring-spigot.redis:false} == false")
+@ConditionalOnExpression("${spring-spigot.db.redis:false} == false")
 class DisableRedisAutoConfiguration {
 }

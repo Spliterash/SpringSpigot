@@ -21,6 +21,6 @@ import org.springframework.context.annotation.Configuration;
         MongoAutoConfiguration.class,
         MongoReactiveAutoConfiguration.class
 })
-@ConditionalOnExpression("${spring-spigot.mongo:false} == false")
+@ConditionalOnExpression("${spring-spigot.db.mongo:false} == false")
 class DisableMongoAutoConfiguration {
 }

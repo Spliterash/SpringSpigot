@@ -1,12 +1,17 @@
 {
   "properties": [
     {
-      "name": "spring-spigot.redis",
+      "name": "spring-spigot.config",
+      "type": "java.lang.String",
+      "description": "Имя для спринговского конфига."
+    },
+    {
+      "name": "spring-spigot.db.redis",
       "type": "java.lang.Boolean",
       "description": "Стоит ли включать Redis."
     },
     {
-      "name": "spring-spigot.mongo",
+      "name": "spring-spigot.db.mongo",
       "type": "java.lang.Boolean",
       "description": "Стоит ли включать Монгу."
     }

@@ -24,12 +24,16 @@ dependencies {
 ```
 
 Дальше, нужно создать класс Spring приложения
+
 ```java
+
 @SpringBootApplication(scanBasePackages = "ru.yourpackage.plugin")
 public class YourAmazingPluginApplication {
 }
 ```
+
 Затем, надо поменять главный класс вашего плагина, на следующее
+
 ```java
 public class YourAmazingPlugin extends SpringSpigotPlugin {
     @Override
@@ -39,9 +43,11 @@ public class YourAmazingPlugin extends SpringSpigotPlugin {
 }
 ```
 
-После этого, можете использовать всю мощь spring'а. Для каждого плагина создаётся свой spring context, поэтому можно спокойно использовать его в множестве плагинов
+После этого, можете использовать всю мощь spring'а. Для каждого плагина создаётся свой spring context, поэтому можно
+спокойно использовать его в множестве плагинов
 
 ```java
+
 @Component
 public class SomeService {
     // CODE
@@ -55,6 +61,7 @@ public class SomeService {
 Автоматически регистрирует класс в Bukkit.getPluginManager().registerEvents()
 
 ```java
+
 @SpigotListener
 @RequiredArgsConstructor // Lombok
 public class PlayerListener implements Listener {
@@ -74,6 +81,7 @@ public class PlayerListener implements Listener {
 конфига через `@Value`
 
 ```java
+
 @Component
 public class SomeService {
     public SomeService(@Value("${config.value}") String value) {
@@ -94,6 +102,7 @@ public class PvpListener implements Listener {
 Регистрирует обработчик команд в spigot
 
 ```java
+
 @SpigotCommand(command = "tp")
 public class TpExecutor implements CommandExecutor {
     // Реализация
@@ -105,6 +114,7 @@ public class TpExecutor implements CommandExecutor {
 `@ConditionalOnMinecraftVersion` Создаст бин только в том случае, если версия майнкрафта попадает в диапазон
 
 ```java
+
 @Component
 @ConditionalOnMinecraftVersion(min = "1.13", max = "1.16.5")
 public class PacketAdapter_13_16 implements PacketAdapter {
@@ -112,23 +122,29 @@ public class PacketAdapter_13_16 implements PacketAdapter {
 }
 ```
 
-### Базы данных
+### Application.yml
 
 Есть возможность использовать MongoTemplate и Redis спринга, для этого надо в файле application.yml, который лежит в
 ресурсах плагина указать
 
 По умолчанию стоит false
 
-Это так же можно прописывать в config.yml если хочется динамичности
-
+`spring-spigot.config` отвечает за название файла спринговского конфига, который спринг загрузит в себе, и будет считать
+его за dataSource. По дефолту там ничего нет
 ```yaml
 spring-spigot:
-  mongo: true # Включает mongo
-  redis: true # Включает redis
+  config: spring-config.yml
+  db:
+    mongo: true # Включает mongo
+    redis: true # Включает redis
 ```
+
 ### Перезагрузка
+
 Для того чтобы реализовать перезагрузку в своём плагине, достаточно сделать примерно следующее
+
 ```java
+
 @SpigotCommand(command = "plugin_name")
 @RequiredArgsConstructor
 public class PluginCommand implements CommandExecutor {
@@ -140,7 +156,7 @@ public class PluginCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0)
             return true;
-        
+
         if (args[0].equals("reload"))
             pluginCallback.reload();
         return true;
