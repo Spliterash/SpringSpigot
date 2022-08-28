@@ -31,7 +31,7 @@ public class SpringSpigotInitializer implements ApplicationContextInitializer<Co
 
         if (applicationYamlInput != null) {
             YamlConfiguration configuration = YamlConfiguration.loadConfiguration(new InputStreamReader(applicationYamlInput));
-            ConfigurationPropertySource innerPluginConfig = new ConfigurationPropertySource(configuration);
+            ConfigurationPropertySource innerPluginConfig = new ConfigurationPropertySource("application", configuration);
 
             propertySources.addLast(innerPluginConfig);
 
@@ -44,7 +44,7 @@ public class SpringSpigotInitializer implements ApplicationContextInitializer<Co
                 if (springPluginConfig.isFile()) {
 
                     YamlConfiguration pluginSpringConfiguration = YamlConfiguration.loadConfiguration(springPluginConfig);
-                    propertySources.addLast(new ConfigurationPropertySource(pluginSpringConfiguration));
+                    propertySources.addLast(new ConfigurationPropertySource("config", pluginSpringConfiguration));
                 }
             }
         }

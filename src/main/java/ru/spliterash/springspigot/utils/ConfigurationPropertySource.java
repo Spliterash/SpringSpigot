@@ -5,8 +5,8 @@ import org.springframework.core.env.PropertySource;
 
 public class ConfigurationPropertySource extends PropertySource<Configuration> {
 
-    public ConfigurationPropertySource(Configuration source) {
-        super("config", source);
+    public ConfigurationPropertySource(String name, Configuration source) {
+        super("springSpigot_" + name, source);
     }
 
     @Override
