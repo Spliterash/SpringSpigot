@@ -7,7 +7,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.DefaultResourceLoader;
 import ru.spliterash.springspigot.LibSpringSpigotPlugin;
-import ru.spliterash.springspigot.init.common.CompoundClassLoader;
 
 import java.util.ArrayList;
 import java.util.List;

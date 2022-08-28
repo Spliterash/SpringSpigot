@@ -3,6 +3,7 @@ package ru.spliterash.springspigot.init;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.springframework.context.ConfigurableApplicationContext;
+import ru.spliterash.springspigot.init.SpringSpigotBootstrapper;
 import ru.spliterash.springspigot.port.PluginCallback;
 
 @RequiredArgsConstructor

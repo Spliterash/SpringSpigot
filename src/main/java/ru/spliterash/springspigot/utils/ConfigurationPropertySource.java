@@ -1,4 +1,4 @@
-package ru.spliterash.springspigot.configuration;
+package ru.spliterash.springspigot.utils;
 
 import org.bukkit.configuration.Configuration;
 import org.springframework.core.env.PropertySource;

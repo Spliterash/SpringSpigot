@@ -1,14 +1,13 @@
 package ru.spliterash.springspigot.init;
 
-import lombok.val;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.MutablePropertySources;
-import ru.spliterash.springspigot.SpringSpigotConfiguration;
-import ru.spliterash.springspigot.configuration.ConfigurationPropertySource;
+import ru.spliterash.springspigot.configuration.SpringSpigotConfiguration;
+import ru.spliterash.springspigot.utils.ConfigurationPropertySource;
 
 import java.io.File;
 import java.io.InputStream;

@@ -9,7 +9,7 @@ plugins {
 
 
 group = "ru.spliterash"
-version = "1.0.1"
+version = "1.0.2"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -30,6 +30,8 @@ tasks.shadowJar {
         paths = listOf("META-INF/spring.factories")
         mergeStrategy = "append"
     }
+
+    exclude("ru/spliterash/springspigot/configuration/IntellijIdeaConfiguration.class")
 }
 
 repositories {
