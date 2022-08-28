@@ -14,6 +14,8 @@ version = "1.0.2"
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+
+    withSourcesJar()
 }
 
 tasks.assemble.get().dependsOn(tasks.shadowJar)
