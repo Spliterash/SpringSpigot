@@ -7,9 +7,9 @@ import com.esotericsoftware.kryo.io.Output;
 
 import java.util.UUID;
 
-public class KryoUUIDSSerializer extends Serializer<UUID> {
+public class KryoUUIDSerializer extends Serializer<UUID> {
 
-    public KryoUUIDSSerializer() {
+    public KryoUUIDSerializer() {
         setImmutable(true);
     }
 
