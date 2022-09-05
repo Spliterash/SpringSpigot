@@ -11,6 +11,10 @@ public class SpringSpigotKryoRedissonCodec extends Kryo5Codec {
 
     private final Consumer<Kryo> additionalAction;
 
+    public SpringSpigotKryoRedissonCodec(ClassLoader loader) {
+        this(loader, null);
+    }
+
     public SpringSpigotKryoRedissonCodec(ClassLoader loader, Consumer<Kryo> additionalAction) {
         super(loader);
         this.additionalAction = additionalAction;
