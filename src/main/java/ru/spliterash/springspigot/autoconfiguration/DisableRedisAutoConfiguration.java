@@ -1,6 +1,5 @@
 package ru.spliterash.springspigot.autoconfiguration;
 
-import com.redis.om.spring.RedisModulesConfiguration;
 import org.redisson.spring.starter.RedissonAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -15,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
         RedisRepositoriesAutoConfiguration.class,
         RedisReactiveAutoConfiguration.class,
         RedissonAutoConfiguration.class,
-        RedisModulesConfiguration.class,
+//        RedisModulesConfiguration.class,
 })
 @ConditionalOnExpression("${spring-spigot.db.redis:false} == false")
 class DisableRedisAutoConfiguration {

@@ -1,8 +1,9 @@
 import com.github.jengelman.gradle.plugins.shadow.transformers.PropertiesFileTransformer
 
 plugins {
-    id("java-library")
-    id("maven-publish")
+    `java-library`
+    `maven-publish`
+    `idea`
     id("io.freefair.lombok") version "6.3.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
@@ -64,7 +65,6 @@ dependencies {
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     api("com.esotericsoftware:kryo:5.3.0")
-    api("com.redis.om:redis-om-spring:0.5.1")
 
     runtimeOnly("mysql:mysql-connector-java")
 
