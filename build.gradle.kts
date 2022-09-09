@@ -10,7 +10,7 @@ plugins {
 
 
 group = "ru.spliterash"
-version = "1.0.2"
+version = "1.0.3"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -60,6 +60,8 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter-aop")
     api("org.springframework.boot:spring-boot-starter-data-mongodb")
     api("org.redisson:redisson-spring-boot-starter:3.17.6")
+    api("redis.clients:jedis:4.2.3")
+
 
     api("com.fasterxml.jackson.core:jackson-databind")
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
