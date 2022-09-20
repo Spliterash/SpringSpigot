@@ -5,6 +5,7 @@ import org.springframework.beans.factory.config.SingletonBeanRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.Ordered;
+import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.type.AnnotationMetadata;
 import ru.spliterash.springspigot.init.SpringSpigotPlugin;
@@ -28,9 +29,13 @@ class ImportSpringSpigotBeansRegistar implements ImportBeanDefinitionRegistrar {
 
         Map<String, Object> multipleBeans = metadata.getAnnotationAttributes(ImportMultipleSpringSpigotBeans.class.getName());
         if (multipleBeans != null) {
-            ImportSpringSpigotBeans[] value = (ImportSpringSpigotBeans[]) multipleBeans.get("value");
-            for (ImportSpringSpigotBeans annotation : value) {
-                importPlugin(castedRegistry, annotation.plugin(), annotation.beans());
+            AnnotationAttributes[] value = (AnnotationAttributes[]) multipleBeans.get("value");
+
+            for (AnnotationAttributes annotation : value) {
+                Class<? extends SpringSpigotPlugin> plugin = annotation.getClass("plugin");
+                Class<?>[] beans = annotation.getClassArray("beans");
+
+                importPlugin(castedRegistry, plugin, beans);
             }
         }
     }
