@@ -19,19 +19,24 @@ class ImportSpringSpigotBeansRegistar implements ImportBeanDefinitionRegistrar {
     public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
         SingletonBeanRegistry castedRegistry = (SingletonBeanRegistry) registry;
 
-        Map<String, Object> attrs = Objects.requireNonNull(metadata.getAnnotationAttributes(ImportSpringSpigotBeans.class.getName()));
+        Map<String, Object> attrs = Objects.requireNonNull(metadata.getAnnotationAttributes(ImportMultipleSpringSpigotBeans.class.getName()));
 
-        Class<? extends SpringSpigotPlugin> pluginClass = (Class<? extends SpringSpigotPlugin>) attrs.get("plugin");
-        Class<?>[] needleBeans = (Class<?>[]) attrs.get("beans");
-
-        SpringSpigotPlugin plugin = JavaPlugin.getPlugin(pluginClass);
+        ImportSpringSpigotBeans[] value = (ImportSpringSpigotBeans[]) attrs.get("value");
 
 
-        for (Class<?> needleBean : needleBeans) {
-            String beanName = plugin.getName() + "." + needleBean.getCanonicalName();
-            Object bean = plugin.getService(needleBean);
+        for (ImportSpringSpigotBeans annotation : value) {
+            Class<? extends SpringSpigotPlugin> pluginClass = annotation.plugin();
+            Class<?>[] needleBeans = annotation.beans();
 
-            castedRegistry.registerSingleton(beanName, bean);
+            SpringSpigotPlugin plugin = JavaPlugin.getPlugin(pluginClass);
+
+
+            for (Class<?> needleBean : needleBeans) {
+                String beanName = plugin.getName() + "." + needleBean.getCanonicalName();
+                Object bean = plugin.getService(needleBean);
+
+                castedRegistry.registerSingleton(beanName, bean);
+            }
         }
     }
 }
