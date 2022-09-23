@@ -10,7 +10,7 @@ plugins {
 
 
 group = "ru.spliterash"
-version = "1.0.4"
+version = "1.0.5"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -59,14 +59,10 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter")
     api("org.springframework.boot:spring-boot-starter-aop")
     api("org.springframework.boot:spring-boot-starter-data-mongodb")
-    api("org.redisson:redisson-spring-boot-starter:3.17.6")
-    api("redis.clients:jedis:4.2.3")
-
 
     api("com.fasterxml.jackson.core:jackson-databind")
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-    api("com.esotericsoftware:kryo:5.3.0")
 
     runtimeOnly("mysql:mysql-connector-java")
 

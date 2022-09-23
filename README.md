@@ -124,7 +124,7 @@ public class PacketAdapter_13_16 implements PacketAdapter {
 
 ### Application.yml
 
-Есть возможность использовать MongoTemplate и Redis спринга, для этого надо в файле application.yml, который лежит в
+Есть возможность использовать MongoTemplate, для этого надо в файле application.yml, который лежит в
 ресурсах плагина указать
 
 По умолчанию стоит false
@@ -136,7 +136,6 @@ spring-spigot:
   config: spring-config.yml
   db:
     mongo: true # Включает mongo
-    redis: true # Включает redis
 ```
 
 ### Перезагрузка
