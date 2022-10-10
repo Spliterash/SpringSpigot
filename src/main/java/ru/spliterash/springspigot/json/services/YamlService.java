@@ -2,36 +2,41 @@ package ru.spliterash.springspigot.json.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
-import ru.spliterash.springspigot.json.serializers.ChatColorSer;
-import ru.spliterash.springspigot.json.serializers.LocationSer;
-import ru.spliterash.springspigot.json.serializers.TextComponentSer;
+import ru.spliterash.springspigot.json.YamlSerializer;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 
 @SuppressWarnings("unused")
 @Getter
 @Component
+@Log4j2
 public class YamlService {
     private final ObjectMapper mapper;
 
-    public YamlService() {
+    public YamlService(Collection<YamlSerializer> serializers) {
         mapper = new ObjectMapper(new YAMLFactory());
 
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        mapper.registerModule(new LocationSer());
-        mapper.registerModule(new TextComponentSer());
-        mapper.registerModule(new ChatColorSer());
-        mapper.registerModule(new JavaTimeModule());
+
+        for (YamlSerializer serializer : serializers) {
+            if (!(serializer instanceof Module)) {
+                log.warn("Serializer " + serializer.getClass().getName() + " not extends from Module");
+                continue;
+            }
+            mapper.registerModule((Module) serializer);
+        }
 
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }

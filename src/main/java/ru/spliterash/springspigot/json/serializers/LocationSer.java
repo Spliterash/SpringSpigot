@@ -14,11 +14,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.springframework.stereotype.Component;
+import ru.spliterash.springspigot.json.YamlSerializer;
 
 import java.io.IOException;
 
 @SuppressWarnings("unused")
-public class LocationSer extends SimpleModule {
+@Component
+public class LocationSer extends SimpleModule implements YamlSerializer {
 
     public LocationSer() {
         super("BukkitLocationSerialization");

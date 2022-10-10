@@ -19,7 +19,7 @@ java {
     withSourcesJar()
 }
 
-tasks.assemble.get().dependsOn(tasks.shadowJar)
+tasks.assemble { dependsOn(tasks.shadowJar) }
 
 tasks.shadowJar {
     mergeServiceFiles {
@@ -39,7 +39,6 @@ tasks.shadowJar {
 
 repositories {
     mavenCentral()
-    mavenLocal()
 
     maven {
         url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
@@ -54,6 +53,10 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT")
+    compileOnly("net.kyori:adventure-api:4.11.0")
+    compileOnly("net.kyori:adventure-text-minimessage:4.11.0")
+
+
     api(platform("org.springframework.boot:spring-boot-dependencies:2.7.3"))
 
     api("org.springframework.boot:spring-boot-starter")
