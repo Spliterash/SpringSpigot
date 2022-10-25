@@ -9,7 +9,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
-import ru.spliterash.springspigot.json.YamlSerializer;
+import ru.spliterash.springspigot.json.JacksonModuleMarker;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,13 +24,13 @@ import java.util.Collection;
 public class YamlService {
     private final ObjectMapper mapper;
 
-    public YamlService(Collection<YamlSerializer> serializers) {
+    public YamlService(Collection<JacksonModuleMarker> serializers) {
         mapper = new ObjectMapper(new YAMLFactory());
 
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
 
-        for (YamlSerializer serializer : serializers) {
+        for (JacksonModuleMarker serializer : serializers) {
             if (!(serializer instanceof Module)) {
                 log.warn("Serializer " + serializer.getClass().getName() + " not extends from Module");
                 continue;

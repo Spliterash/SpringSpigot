@@ -10,13 +10,13 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.springframework.stereotype.Component;
-import ru.spliterash.springspigot.json.YamlSerializer;
+import ru.spliterash.springspigot.json.JacksonModuleMarker;
 
 import java.io.IOException;
 
 @SuppressWarnings("unused")
 @Component
-public class TextComponentSer extends SimpleModule implements YamlSerializer {
+public class TextComponentSer extends SimpleModule implements JacksonModuleMarker {
 
     public TextComponentSer() {
         super("BungeeTextComponentSerialization");
