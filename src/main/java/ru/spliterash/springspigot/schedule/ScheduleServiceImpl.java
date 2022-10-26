@@ -1,11 +1,15 @@
 package ru.spliterash.springspigot.schedule;
 
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.springframework.stereotype.Component;
 import ru.spliterash.springspigot.schedule.func.CancelRunnable;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 @Component
 @RequiredArgsConstructor
@@ -65,4 +69,44 @@ public class ScheduleServiceImpl implements ScheduleService {
         }.runTaskTimerAsynchronously(plugin, delay, period);
     }
 
+    @Override
+    public <T> T runInSyncWithResult(Supplier<T> supplier) {
+        return runInSyncFuture(supplier).join();
+    }
+
+    @Override
+    public <T> CompletableFuture<T> runInSyncFuture(Supplier<T> supplier) {
+        if (Bukkit.isPrimaryThread())
+            return CompletableFuture.completedFuture(supplier.get());
+        else {
+            CompletableFuture<T> completable = new CompletableFuture<>();
+
+            runSyncTask(() -> {
+                try {
+                    T result = supplier.get();
+                    completable.complete(result);
+                } catch (Exception exception) {
+                    completable.completeExceptionally(exception);
+                }
+            });
+
+            return completable;
+        }
+    }
+
+    @Override
+    public void runInSync(Runnable runnable) {
+        if (Bukkit.isPrimaryThread())
+            runnable.run();
+        else
+            runSyncTask(runnable);
+    }
+
+    @Override
+    public void runInSyncBlocking(Runnable runnable) {
+        runInSyncWithResult(() -> {
+            runnable.run();
+            return null;
+        });
+    }
 }
