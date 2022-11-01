@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,10 @@ public class YamlService {
     private final ObjectMapper mapper;
 
     public YamlService(Collection<JacksonModuleMarker> serializers) {
-        mapper = new ObjectMapper(new YAMLFactory());
+        mapper = new ObjectMapper(new YAMLFactory()
+                .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
+                .disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID)
+        );
 
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
