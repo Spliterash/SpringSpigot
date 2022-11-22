@@ -1,22 +1,18 @@
 package ru.spliterash.springspigot.json.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
-import ru.spliterash.springspigot.json.JacksonModuleMarker;
+import ru.spliterash.springspigot.json.ObjectMapperService;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Collection;
 
 @SuppressWarnings("unused")
 @Getter
@@ -25,24 +21,12 @@ import java.util.Collection;
 public class YamlService {
     private final ObjectMapper mapper;
 
-    public YamlService(Collection<JacksonModuleMarker> serializers) {
+    public YamlService(ObjectMapperService service) {
         mapper = new ObjectMapper(new YAMLFactory()
                 .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
                 .disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID)
         );
-
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-
-        for (JacksonModuleMarker serializer : serializers) {
-            if (!(serializer instanceof Module)) {
-                log.warn("Serializer " + serializer.getClass().getName() + " not extends from Module");
-                continue;
-            }
-            mapper.registerModule((Module) serializer);
-        }
-
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        service.configureObjectMapper(mapper);
     }
 
     public <T> T load(File file, Class<T> clazz) throws IOException {
