@@ -61,7 +61,8 @@ dependencies {
 
     api("org.springframework.boot:spring-boot-starter")
     api("org.springframework.boot:spring-boot-starter-aop")
-    api("org.springframework.boot:spring-boot-starter-data-mongodb")
+    api("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
+
 
     api("com.fasterxml.jackson.core:jackson-databind")
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
