@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -21,13 +22,13 @@ public class ObjectMapperService {
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
 
-        for (JacksonModuleMarker module : modules) {
+        for (JacksonModuleMarker module : (modules)) {
             if (!(module instanceof Module)) {
                 log.warn("Module " + module.getClass().getName() + " not extends from Module");
                 continue;
             }
             mapper.registerModule((Module) module);
         }
-
+        mapper.registerModule(new KotlinModule.Builder().build());
     }
 }

@@ -57,16 +57,20 @@ dependencies {
     compileOnly("net.kyori:adventure-text-minimessage:4.11.0")
 
 
-    api(platform("org.springframework.boot:spring-boot-dependencies:2.7.3"))
+    api(platform("org.springframework.boot:spring-boot-dependencies:2.7.5"))
 
     api("org.springframework.boot:spring-boot-starter")
     api("org.springframework.boot:spring-boot-starter-aop")
+    api("org.springframework.boot:spring-boot-starter-data-mongodb")
     api("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
 
 
     api("com.fasterxml.jackson.core:jackson-databind")
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    api("com.fasterxml.jackson.module:jackson-module-kotlin") {
+        isTransitive = false
+    }
 
     runtimeOnly("mysql:mysql-connector-java")
 
