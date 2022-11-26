@@ -1,7 +1,7 @@
 # Spring Spigot
 
 Скачать последнюю версию плагина
-можно [отсюда](https://jenkins.spliterash.ru/job/public/job/minecraft/job/spring-spigot/)
+можно [отсюда](https://jenkins.spliterash.ru/job/public/job/minecraft/job/SpringSpigot/)
 
 Этот плагин позволяет использовать spring для написания майнкрафт плагинов.
 
