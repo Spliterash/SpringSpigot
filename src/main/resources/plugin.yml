@@ -2,3 +2,6 @@ name: SpringSpigot
 main: ru.spliterash.springspigot.LibSpringSpigotPlugin
 version: 1.0.0
 api-version: 1.13
+
+depend:
+  - LibsReactor

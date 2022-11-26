@@ -35,6 +35,9 @@ tasks.shadowJar {
     }
 
     exclude("ru/spliterash/springspigot/configuration/IntellijIdeaConfiguration.class")
+    dependencies {
+        exclude(dependency("io.projectreactor:reactor-core"))
+    }
 }
 
 repositories {
