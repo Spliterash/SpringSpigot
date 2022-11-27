@@ -2,10 +2,12 @@ package ru.spliterash.springspigot.init;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.MutablePropertySources;
+import ru.spliterash.springspigot.LibSpringSpigotPlugin;
 import ru.spliterash.springspigot.configuration.SpringSpigotConfiguration;
 import ru.spliterash.springspigot.utils.ConfigurationPropertySource;
 
@@ -26,6 +28,16 @@ public class SpringSpigotInitializer implements ApplicationContextInitializer<Co
 
     public void initialize(ConfigurableApplicationContext context) {
         MutablePropertySources propertySources = context.getEnvironment().getPropertySources();
+        //noinspection ConstantConditions
+        ConfigurationPropertySource builtInConfiguration = new ConfigurationPropertySource(
+                "SpringSpigotBuiltIn",
+                YamlConfiguration.loadConfiguration(
+                        new InputStreamReader(
+                                JavaPlugin
+                                        .getPlugin(LibSpringSpigotPlugin.class)
+                                        .getResource("application.yml")
+                        ))
+        );
 
         InputStream applicationYamlInput = plugin.getResource("application.yml");
 
@@ -48,6 +60,7 @@ public class SpringSpigotInitializer implements ApplicationContextInitializer<Co
                 }
             }
         }
+        propertySources.addLast(builtInConfiguration);
         context.getBeanFactory().registerSingleton(plugin.getClass().getCanonicalName(), plugin);
 
         if (context instanceof AnnotationConfigApplicationContext) {
