@@ -33,10 +33,9 @@ tasks.shadowJar {
         paths = listOf("META-INF/spring.factories")
         mergeStrategy = "append"
     }
-
-    exclude("ru/spliterash/springspigot/configuration/IntellijIdeaConfiguration.class")
     dependencies {
         exclude(dependency("io.projectreactor:reactor-core"))
+        exclude(dependency("org.reactivestreams:reactive-streams"))
     }
 }
 

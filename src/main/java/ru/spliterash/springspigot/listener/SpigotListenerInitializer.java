@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SpigotListenerInitializer implements DestructionAwareBeanPostProcessor {
     private final JavaPlugin plugin;
-
+    
     @PreDestroy
     public void onClose() {
         HandlerList.unregisterAll(plugin);
@@ -25,12 +24,8 @@ public class SpigotListenerInitializer implements DestructionAwareBeanPostProces
 
     private Optional<Listener> getListener(Object bean) {
         if (bean instanceof Listener) {
-            Class<?> targetClass = AopUtils.getTargetClass(bean);
-            if (targetClass.isAnnotationPresent(SpigotListener.class)) {
-                Listener realListener = ProxyUtils.getProxyTarget(bean);
-
-                return Optional.of(realListener);
-            }
+            Listener realListener = ProxyUtils.getProxyTarget(bean);
+            return Optional.of(realListener);
         }
 
         return Optional.empty();

@@ -8,6 +8,8 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+// Я чот так подумал, особо смысла нет, можно же просто листер на instanceof чекать
+@Deprecated
 @Component
 public @interface SpigotListener {
     /**
