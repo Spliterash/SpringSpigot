@@ -9,18 +9,12 @@ import org.springframework.beans.factory.config.DestructionAwareBeanPostProcesso
 import org.springframework.context.annotation.Configuration;
 import ru.spliterash.springspigot.utils.ProxyUtils;
 
-import javax.annotation.PreDestroy;
 import java.util.Optional;
 
 @Configuration
 @RequiredArgsConstructor
 public class SpigotListenerInitializer implements DestructionAwareBeanPostProcessor {
     private final JavaPlugin plugin;
-    
-    @PreDestroy
-    public void onClose() {
-        HandlerList.unregisterAll(plugin);
-    }
 
     private Optional<Listener> getListener(Object bean) {
         if (bean instanceof Listener) {
