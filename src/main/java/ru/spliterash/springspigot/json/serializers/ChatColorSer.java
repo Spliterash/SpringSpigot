@@ -9,13 +9,13 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import net.md_5.bungee.api.ChatColor;
 import org.springframework.stereotype.Component;
-import ru.spliterash.springspigot.json.JacksonModuleMarker;
+import ru.spliterash.springspigot.json.JacksonModuleProvider;
 
 import java.awt.*;
 import java.io.IOException;
 
 @Component
-public class ChatColorSer extends SimpleModule implements JacksonModuleMarker {
+public class ChatColorSer extends SimpleModule implements JacksonModuleProvider {
     public ChatColorSer() {
         super("ChatColorSerialization");
 

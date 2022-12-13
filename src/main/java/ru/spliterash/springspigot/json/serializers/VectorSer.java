@@ -11,13 +11,13 @@ import com.fasterxml.jackson.databind.node.NumericNode;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.bukkit.util.Vector;
 import org.springframework.stereotype.Component;
-import ru.spliterash.springspigot.json.JacksonModuleMarker;
+import ru.spliterash.springspigot.json.JacksonModuleProvider;
 
 import java.io.IOException;
 
 @SuppressWarnings("unused")
 @Component
-public class VectorSer extends SimpleModule implements JacksonModuleMarker {
+public class VectorSer extends SimpleModule implements JacksonModuleProvider {
 
     public VectorSer() {
         super("BukkitVectorSerialization");

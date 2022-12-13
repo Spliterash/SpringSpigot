@@ -9,13 +9,13 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.bukkit.Color;
 import org.springframework.stereotype.Component;
-import ru.spliterash.springspigot.json.JacksonModuleMarker;
+import ru.spliterash.springspigot.json.JacksonModuleProvider;
 
 import java.io.IOException;
 
 @SuppressWarnings("unused")
 @Component
-public class ColorSer extends SimpleModule implements JacksonModuleMarker {
+public class ColorSer extends SimpleModule implements JacksonModuleProvider {
 
     public ColorSer() {
         super("BukkitColorSerialization");

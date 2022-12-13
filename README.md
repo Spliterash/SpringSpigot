@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("ru.spliterash:spring-spigot:1.0.1")
+    compileOnly("ru.spliterash:spring-spigot:1.0.6")
 }
 ```
 
