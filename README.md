@@ -1,7 +1,7 @@
 # Spring Spigot
 
 Скачать последнюю версию плагина
-можно [отсюда](https://jenkins.spliterash.ru/job/public/job/minecraft/job/SpringSpigot/)
+можно [отсюда](https://jenkins.spliterash.ru/job/public/job/SpringSpigot/)
 
 Этот плагин позволяет использовать spring для написания майнкрафт плагинов.
 
@@ -14,7 +14,7 @@
 ```groovy
 repositories {
     maven {
-        url = uri("https://nexus.spliterash.ru/repository/group/")
+        url = uri("https://repo.spliterash.ru/repository/group/")
     }
 }
 
@@ -166,3 +166,16 @@ public class PluginCommand implements CommandExecutor {
 Это завершит приложение spring, а затем заново создаст его, те все компоненты будут созданы заново
 
 Можно повешать внутри них `@PreDestroy`, чтобы завершить игровые события при перезагрузке, или выключении сервера
+
+### Import компонентов из других SpringSpigot плагинов
+
+Если у вас есть другой плагин, который работает через SpringSpigot, то вы можете легко импортировать компоненты из него
+
+
+```java
+@ConditionalOnClass(AnotherSpringSpigotPlugin.class) // Optional
+@ImportSpringSpigotBeans(plugin = AnotherSpringSpigotPlugin.class, beans = {AnotherPluginBean1.class, AnotherPluginBean2.class})
+public class SpringConfiguration {
+
+}
+```

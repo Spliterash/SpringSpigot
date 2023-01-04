@@ -2,3 +2,4 @@ spring:
   data:
     mongodb:
       uuid-representation: standard
+      authentication-database: admin

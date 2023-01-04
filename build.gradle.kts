@@ -91,7 +91,7 @@ publishing {
             repositories {
                 maven {
                     name = "nexus"
-                    url = uri("https://nexus.spliterash.ru/repository/spring-spigot")
+                    url = uri("https://repo.spliterash.ru/spring-spigot")
                     credentials {
                         username = findProperty("SPLITERASH_NEXUS_USR")?.toString()
                         password = findProperty("SPLITERASH_NEXUS_PSW")?.toString()
