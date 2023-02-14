@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Import(ImportSpringSpigotBeansRegistar.class)
 @Repeatable(ImportMultipleSpringSpigotBeans.class)
 public @interface ImportSpringSpigotBeans {
-    Class<? extends SpringSpigotPlugin> plugin();
+    Class<? extends SpringSpigotPlugin> plugin() default SpringSpigotPlugin.class;
 
     Class<?>[] beans();
 }

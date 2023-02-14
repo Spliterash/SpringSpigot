@@ -41,8 +41,12 @@ class ImportSpringSpigotBeansRegistar implements ImportBeanDefinitionRegistrar {
     }
 
     private void importPlugin(SingletonBeanRegistry registry, Class<? extends SpringSpigotPlugin> pluginClass, Class<?>[] needleBeans) {
-        SpringSpigotPlugin plugin = JavaPlugin.getPlugin(pluginClass);
+        SpringSpigotPlugin plugin;
 
+        if (!pluginClass.equals(SpringSpigotPlugin.class))
+            plugin = JavaPlugin.getPlugin(pluginClass);
+        else
+            plugin = (SpringSpigotPlugin) JavaPlugin.getProvidingPlugin(needleBeans[0]);
 
         for (Class<?> needleBean : needleBeans) {
             String beanName = plugin.getName() + "." + needleBean.getCanonicalName();
