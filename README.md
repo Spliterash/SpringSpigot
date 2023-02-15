@@ -14,12 +14,12 @@
 ```groovy
 repositories {
     maven {
-        url = uri("https://repo.spliterash.ru/repository/group/")
+        url = uri("https://repo.spliterash.ru/group/")
     }
 }
 
 dependencies {
-    compileOnly("ru.spliterash:spring-spigot:1.0.6")
+    compileOnly("ru.spliterash:spring-spigot:1.0.7")
 }
 ```
 
