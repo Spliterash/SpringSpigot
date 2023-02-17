@@ -1,6 +1,8 @@
 package ru.spliterash.springspigot.annotations.importSpringSpigotBeans;
 
+import lombok.extern.log4j.Log4j2;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.config.SingletonBeanRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -12,6 +14,7 @@ import ru.spliterash.springspigot.init.SpringSpigotPlugin;
 
 import java.util.Map;
 
+@Log4j2
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class ImportSpringSpigotBeansRegistar implements ImportBeanDefinitionRegistrar {
     @SuppressWarnings("unchecked")
@@ -41,16 +44,33 @@ class ImportSpringSpigotBeansRegistar implements ImportBeanDefinitionRegistrar {
     }
 
     private void importPlugin(SingletonBeanRegistry registry, Class<? extends SpringSpigotPlugin> pluginClass, Class<?>[] needleBeans) {
-        SpringSpigotPlugin plugin;
+        JavaPlugin plugin;
 
-        if (!pluginClass.equals(SpringSpigotPlugin.class))
-            plugin = JavaPlugin.getPlugin(pluginClass);
-        else
-            plugin = (SpringSpigotPlugin) JavaPlugin.getProvidingPlugin(needleBeans[0]);
+        if (pluginClass.equals(SpringSpigotPlugin.class)) {
+            try {
+                plugin = JavaPlugin.getProvidingPlugin(needleBeans[0]);
+            } catch (Exception ex) {
+                log.warn("Failed import spring spigot beans, because plugin not found using class " + needleBeans[0].getName());
+                return;
+            }
+        } else {
+            try {
+                plugin = JavaPlugin.getPlugin(pluginClass);
+            } catch (Exception exception) {
+                log.warn("Failed find plugin by class " + pluginClass.getName());
+                return;
+            }
+        }
+        if (!(plugin instanceof SpringSpigotPlugin)) {
+            log.warn(plugin.getName() + " is not spring spigot plugin");
+            return;
+        }
+
+        SpringSpigotPlugin springSpigotPlugin = (SpringSpigotPlugin) plugin;
 
         for (Class<?> needleBean : needleBeans) {
             String beanName = plugin.getName() + "." + needleBean.getCanonicalName();
-            Object bean = plugin.getService(needleBean);
+            Object bean = springSpigotPlugin.getService(needleBean);
 
             registry.registerSingleton(beanName, bean);
         }
