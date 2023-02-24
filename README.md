@@ -76,9 +76,12 @@ public class PlayerListener implements Listener {
 ```
 
 ### config.yml
-
-Всё, что лежит в config.yml читается спрингом так, как будто это application.yml, поэтому вы можете получать значения из
-конфига через `@Value`
+Чтобы spring мог использовать config.yml как источник конфигурации, это надо указать в application.yml
+```yaml
+spring-spigot:
+  config: config.yml
+```
+После этого вы можете получать значения из конфига через `@Value`
 
 ```java
 
