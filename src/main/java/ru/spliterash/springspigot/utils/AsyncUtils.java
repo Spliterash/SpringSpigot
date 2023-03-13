@@ -3,21 +3,16 @@ package ru.spliterash.springspigot.utils;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 public class AsyncUtils {
 
 
     public static <T> CompletionStage<Void> executeSequentially(List<T> list, Function<T, CompletionStage<Void>> converter) {
-        AtomicInteger number = new AtomicInteger(0);
-
-        return executeSequentially(list, converter, number);
+        return executeSequentially(list, converter, 0);
     }
 
-    private static <T> CompletionStage<Void> executeSequentially(List<T> list, Function<T, CompletionStage<Void>> converter, AtomicInteger number) {
-        int i = number.getAndIncrement();
-
+    private static <T> CompletionStage<Void> executeSequentially(List<T> list, Function<T, CompletionStage<Void>> converter, int i) {
         if (i >= list.size())
             return CompletableFuture.completedFuture(null);
 
@@ -29,13 +24,13 @@ public class AsyncUtils {
                             if (throwable != null)
                                 throwable.printStackTrace();
 
-                            return executeSequentially(list, converter, number);
+                            return executeSequentially(list, converter, i + 1);
                         })
                         .thenCompose(Function.identity());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        return executeSequentially(list, converter, number);
+        return executeSequentially(list, converter, i + 1);
     }
 }
