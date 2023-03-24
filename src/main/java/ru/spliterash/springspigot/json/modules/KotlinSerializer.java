@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import ru.spliterash.springspigot.json.JacksonModuleProvider;
 
 @Component
-@ConditionalOnClass(name = "ru.spliterash.kotlinmc.CoroutinePlugin")
+@ConditionalOnClass(name = "ru.spliterash.kotlinmc.KotlinMCPlugin")
 public class KotlinSerializer implements JacksonModuleProvider {
     @Override
     public Module getModule() {
